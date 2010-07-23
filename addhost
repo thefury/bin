@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+FILENAME = "/etc/hosts"
+
+if __FILE__ == $0
+  # if the file does not include the host
+  # add the following
+  # else
+  # the host already exists
+end
