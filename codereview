@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+USAGE="codereview REVISION_ID"
+HELP="runs reek and roodi on all files of a commit"
+
+if ARGV.count == 0
+  puts "usage: #{USAGE}"
+  exit
+end
+
+if ARGV[0] == "-h" || ARGV[0] == "--help"
+  puts "usage: #{USAGE}"
+  puts HELP
+end
+
+# svn log --verbose -r 808 | grep mosaic | cut -c24-100 | xargs roodi
+f = IO.popen("svn log -r #{ARGV[0]} | grep '^r' | cut -c8-325")
+message = f.readlines
+
+puts "Commit #{ARGV[0]}: #{message.to_s}"
+
+["roodi","reek","flay","rails_best_practices"].each { |test|
+  puts "=============================="
+  puts "#{test}"
+  puts "=============================="
+  f = IO.popen("svn log --verbose -r #{ARGV[0]} | grep -v schema | grep mosaic | cut -c24-325 | xargs #{test}")
+  puts f.readlines
+}

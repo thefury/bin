@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+["roodi","reek","flay","rails_best_practices"].each { |test|
+  puts "=============================="
+  puts "#{test}"
+  puts "=============================="
+  f = IO.popen("svn st | grep rb | grep -v schema | cut -c9-100 | xargs #{test}")
+  puts f.readlines
+}
